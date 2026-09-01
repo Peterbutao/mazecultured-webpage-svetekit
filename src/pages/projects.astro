@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ThemeToggle from '../components/ThemeToggle.svelte';
+---
+
+<Layout title="Projects | MAZE.CULTRD" description="MAZE.CULTRD Projects — JEZE DAPP FIT and ongoing photographic series documenting Malawian youth subcultures.">
+  <header>
+    <div class="header-left">
+      <a href="/" style="text-decoration:none"><div class="brand">MAZE.CULTRD</div></a>
+      <div class="street-tag">MW // PROJECTS</div>
+    </div>
+    <ThemeToggle client:load />
+  </header>
+
+  <main class="archive-page">
+    <div>
+      <div class="corridor-tag">ARCHIVE // PROJECTS</div>
+      <h1>PRO<span class="highlight-yellow">JECTS.</span></h1>
+      <p class="archive-intro">
+        Ongoing photographic and editorial projects mapping Malawian youth culture at ground level — from DAPP thrifting and football × streetwear to sound and community.
+      </p>
+    </div>
+
+    <div class="archive-grid">
+      <!-- JEZE -->
+      <article class="archive-card">
+        <div class="archive-card-image" style="background-image: url('/PROJECTS/JEZE/JEZE 3_1.JPG')"></div>
+        <div class="archive-card-body">
+          <div class="archive-card-meta">PROJECT 01 // JEZE // DAPP FIT</div>
+          <h2 class="archive-card-title">JEZE: Football × Streetwear</h2>
+          <p class="archive-card-excerpt">
+            A photo series exploring the intersection of football and fashion — 90s jerseys re-contextualized through DAPP thrifting into urban high fashion. Beyond the pitch, celebrating the people and style that make the beautiful game culture.
+          </p>
+          <a href="/projects/jeze" class="archive-card-link">ENTER PROJECT <span>→</span></a>
+        </div>
+      </article>
+
+      <!-- Placeholder forthcoming -->
+      <article class="archive-card" style="opacity:0.92">
+        <div class="archive-card-image" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%), url('/ARTICLES/CAR CULTURE/LMS_67.jpg'); display:flex; align-items:center; justify-content:center;">
+          <span style="position:relative; z-index:1; background:#000; color:var(--neon-yellow); font-family:var(--font-head); padding:0.3rem 0.6rem; border:1px solid var(--neon-yellow); font-size:0.85rem;">COMING SOON</span>
+        </div>
+        <div class="archive-card-body">
+          <div class="archive-card-meta">PROJECT 02 // IN PRODUCTION</div>
+          <h2 class="archive-card-title">Blantyre Drift Culture</h2>
+          <p class="archive-card-excerpt">
+            Next corridor expansion documenting car customization, drift builds, and VW Golf culture across Blantyre and Lilongwe. Submissions open.
+          </p>
+          <span class="archive-card-link alt" style="pointer-events:none; opacity:0.75;">LOCKED <span>↗</span></span>
+        </div>
+      </article>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <a href="/" class="turn-btn" style="max-width:280px; text-decoration:none;"><span>← RETURN TO MAZE</span></a>
+      <a href="/articles" class="turn-btn alt" style="max-width:280px; text-decoration:none;"><span>VIEW ARTICLES</span><span>→</span></a>
+    </div>
+    <div class="hazard-bar" style="margin-top:0.4rem; max-width:568px;"></div>
+  </main>
+</Layout>

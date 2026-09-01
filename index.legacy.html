@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MAZE.CULTRD | Urban Subculture Labyrinth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&family=Syne:wght@800&display=swap" rel="stylesheet">
+    <style>
+        /* Light Theme (Default) */
+        :root {
+            --bg: #EAEAE4;
+            --surface: #FFFFFF;
+            --text: #0A0A0A;
+            --border-color: #000000;
+            --neon-yellow: #D7F000;
+            --spray-red: #FF2A00;
+            --cyan: #00B4D8;
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --tape-bg: rgba(255, 255, 255, 0.35);
+            --grid-color: rgba(0, 0, 0, 0.06);
+            --font-head: 'Anton', sans-serif;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
+        /* Dark Theme Override */
+        [data-theme="dark"] {
+            --bg: #050505;
+            --surface: #121212;
+            --text: #F5F5F0;
+            --border-color: #222222;
+            --neon-yellow: #E0FF00;
+            --spray-red: #FF2A00;
+            --cyan: #00F0FF;
+            --card-shadow: rgba(0, 0, 0, 0.9);
+            --tape-bg: rgba(255, 255, 255, 0.25);
+            --grid-color: rgba(0, 0, 0, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px);
+            background-size: 24px 24px, 40px 100%;
+        }
+
+        #viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #maze-world {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200vw;
+            height: 500vh;
+            will-change: transform;
+        }
+
+        /* Responsive Header Navigation */
+        header {
+            position: fixed;
+            top: 0.5rem;
+            left: 0.5rem;
+            right: 0.5rem;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            gap: 0.4rem;
+            max-width: calc(100vw - 1rem);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            pointer-events: auto;
+            min-width: 0;
+        }
+
+        .brand {
+            font-family: var(--font-head);
+            font-size: clamp(0.95rem, 3.8vw, 1.6rem);
+            letter-spacing: 0.03em;
+            color: #000;
+            text-transform: uppercase;
+            background: var(--neon-yellow);
+            padding: 0.2rem 0.4rem;
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0px var(--spray-red);
+            transform: rotate(-1.5deg);
+            white-space: nowrap;
+        }
+
+        .street-tag {
+            background: #000;
+            color: #FFF;
+            font-family: var(--font-display);
+            font-size: clamp(0.5rem, 2vw, 0.65rem);
+            font-weight: 800;
+            padding: 0.25rem 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transform: rotate(1deg);
+            border: 2px solid #000;
+            white-space: nowrap;
+        }
+
+        .theme-toggle {
+            pointer-events: auto;
+            background: var(--surface);
+            color: var(--text);
+            font-family: var(--font-head);
+            font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.5rem;
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0px var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--border-color);
+        }
+
+        @media (max-width: 380px) {
+            .street-tag {
+                display: none;
+            }
+        }
+
+        /* Labyrinth Corridor Panels */
+        .panel {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            padding: 4.5rem 1rem 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* STRICT 100VH PANELS */
+        #hero   { top: 0; left: 0; height: 100vh; max-height: 100vh; overflow: hidden; }
+        #about  { top: 100vh; left: 0; height: 100vh; max-height: 100vh; overflow: hidden; }
+        #abale  { top: 200vh; left: 0; height: 100vh; max-height: 100vh; overflow: hidden; }
+        #jeze   { top: 200vh; left: 100vw; height: 100vh; max-height: 100vh; overflow: hidden; }
+        #golf   { top: 300vh; left: 100vw; height: 100vh; max-height: 100vh; overflow: hidden; }
+        #footer { top: 400vh; left: 100vw; height: 100vh; overflow-y: auto; }
+
+        .corridor-tag {
+            font-family: var(--font-body);
+            font-weight: 900;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #000;
+            background: var(--neon-yellow);
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border: 1.5px solid #000;
+            margin-bottom: 0.25rem;
+        }
+
+        h1 {
+            font-family: var(--font-head);
+            font-size: clamp(2.6rem, 9vw, 5.2rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        .highlight-yellow { 
+            background: var(--neon-yellow);
+            color: #000;
+            padding: 0 0.2rem;
+        }
+        .highlight-red { color: var(--spray-red); }
+        .highlight-cyan { 
+            background: var(--cyan);
+            color: #000;
+            padding: 0 0.2rem;
+        }
+
+        /* ABOUT SECTION EDITORIAL CARD */
+        .about-card {
+            background: var(--surface);
+            border: 2px solid #000;
+            padding: 1.25rem;
+            box-shadow: 4px 4px 0px #000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .about-text p {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .about-grid-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .stat-box {
+            border: 1.5px solid #000;
+            padding: 0.5rem;
+            background: var(--bg);
+        }
+
+        .stat-title {
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            color: var(--spray-red);
+        }
+
+        .stat-val {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .hero-socials {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0px #000;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+        }
+
+        .social-icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .social-icon-btn:hover {
+            background: var(--neon-yellow);
+            color: #000;
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px #000;
+        }
+
+        /* URBAN CAROUSEL WITH SCALE FOCUS EFFECT */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 42vh;
+            margin: 0.3rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            align-items: center;
+            padding: 0 8vw;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide {
+            flex: 0 0 84vw;
+            height: 90%;
+            scroll-snap-align: center;
+            position: relative;
+            margin: 0 -2vw;
+            background-color: var(--surface);
+            border: 2px solid #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.25rem;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            
+            transform: scale(0.86);
+            opacity: 0.45;
+            filter: grayscale(80%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.45s ease, 
+                        filter 0.45s ease,
+                        box-shadow 0.45s ease;
+        }
+
+        .slide.is-focused {
+            transform: scale(1);
+            opacity: 1;
+            filter: grayscale(0%);
+            box-shadow: 0 10px 25px var(--card-shadow), 4px 4px 0px #000;
+            z-index: 2;
+        }
+
+        .sticker {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.8rem;
+            background: #000;
+            color: var(--neon-yellow);
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            text-transform: uppercase;
+            border: 1px solid var(--neon-yellow);
+        }
+
+        .tape-corner {
+            position: absolute;
+            top: -6px;
+            right: 15px;
+            width: 50px;
+            height: 15px;
+            background: var(--tape-bg);
+            backdrop-filter: blur(2px);
+            transform: rotate(12deg);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        /* DIRECT LOCAL IMAGE BACKGROUND MAPPINGS */
+        .bg-e1 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/ABALE/a_ba.le.jpg'); }
+        .bg-e2 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('PROJECTS/JEZE/JEZE 3_1.JPG'); }
+        .bg-e3 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/CAR CULTURE/LMS.jpg'); }
+
+        .bg-a1 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/ABALE/a_ba.le_49.jpg'); }
+        .bg-a2 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/ABALE/a_ba.le_54.jpg'); }
+        .bg-a3 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/ABALE/a_ba.le_73.jpg'); }
+
+        .bg-j1 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('PROJECTS/JEZE/DSC_9179.jpg'); }
+        .bg-j2 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('PROJECTS/JEZE/KUMBALI LIVE_13.jpg'); }
+        .bg-j3 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('PROJECTS/JEZE/JEZE 3_12.JPG'); }
+
+        .bg-g1 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/CAR CULTURE/LMS_3.jpg'); }
+        .bg-g2 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/CAR CULTURE/LMS_13.jpg'); }
+        .bg-g3 { background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 85%), url('ARTICLES/CAR CULTURE/LMS_50.jpg'); }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            line-height: 0.95;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .punchline {
+            font-size: 0.85rem;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-top: 0.3rem;
+            color: #EAEAE4;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        /* Editorial Action Turn Buttons */
+        .turn-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.8rem 1.1rem;
+            background: var(--neon-yellow);
+            color: #000;
+            font-family: var(--font-head);
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            cursor: pointer;
+        }
+
+        .turn-btn.alt {
+            background: #000;
+            color: #FFF;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0px var(--spray-red);
+        }
+
+        .hazard-bar {
+            height: 6px;
+            width: 100%;
+            background: repeating-linear-gradient(
+                -45deg,
+                var(--neon-yellow),
+                var(--neon-yellow) 10px,
+                #000 10px,
+                #000 20px
+            );
+            margin-top: 0.25rem;
+            border: 1px solid #000;
+        }
+
+        /* --- FULL WIDTH FOOTER PANEL STYLING --- */
+        .footer-content {
+            width: 100%;
+            background: var(--surface);
+            border: 2px solid #000;
+            box-shadow: 5px 5px 0px #000;
+            padding: 1.5rem;
+            margin: 0.75rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-ticker {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: #000;
+            color: var(--neon-yellow);
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+            border: 2px solid #000;
+            letter-spacing: 0.08em;
+        }
+
+        .ticker-track {
+            display: inline-block;
+            animation: marquee 16s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: var(--spray-red);
+            margin-bottom: 0.6rem;
+            border-bottom: 2px solid #000;
+            padding-bottom: 0.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-links a:hover {
+            color: var(--spray-red);
+        }
+
+        .footer-sub-text {
+            font-size: 0.8rem;
+            line-height: 1.35;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .city-nodes-bar {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--neon-yellow);
+            color: #000;
+            padding: 0.6rem 1rem;
+            text-align: center;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0px #000;
+        }
+
+        .copyright-line {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-top: 2px dashed #000;
+            padding-top: 0.8rem;
+            gap: 0.5rem;
+        }
+
+        /* DESKTOP RESPONSIVE & ASPECT RATIO FIXES */
+        @media (min-width: 768px) {
+            header {
+                top: 1rem;
+                left: 1rem;
+                right: 1rem;
+                padding: 0.5rem 1.5rem;
+            }
+
+            .brand {
+                font-size: 1.6rem;
+                padding: 0.25rem 0.75rem;
+                box-shadow: 3px 3px 0px var(--spray-red);
+            }
+
+            .street-tag {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.6rem;
+            }
+
+            .theme-toggle {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.75rem;
+                box-shadow: 3px 3px 0px var(--border-color);
+            }
+
+            .panel {
+                padding: 5.5rem 4rem 2rem 4rem;
+            }
+
+            .about-card {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 2rem;
+            }
+
+            .about-text {
+                max-width: 55%;
+            }
+
+            .about-grid-stats {
+                width: 38%;
+            }
+
+            .carousel-wrapper {
+                height: 52vh;
+                max-height: 480px;
+            }
+
+            .carousel-track {
+                padding: 0 calc(50vw - 180px);
+            }
+
+            .slide {
+                flex: 0 0 350px;
+                max-width: 350px;
+                height: 100%;
+                aspect-ratio: 3 / 4;
+                margin: 0 0.75rem;
+            }
+
+            .turn-btn {
+                max-width: 440px;
+            }
+
+            .hazard-bar {
+                max-width: 440px;
+            }
+
+            .footer-content {
+                width: 100%;
+                padding: 2rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body { height: auto !important; overflow-y: auto; }
+            #viewport { position: static; height: auto; }
+            #maze-world { position: static; width: 100%; height: auto; transform: none !important; }
+            .panel { position: relative; top: 0 !important; left: 0 !important; height: auto; min-height: 100vh; }
+            .ticker-track { animation: none; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <header>
+        <div class="header-left">
+            <div class="brand">MAZE.CULTRD</div>
+            <div class="street-tag">MW // SUBCULTURES</div>
+        </div>
+        
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle visual theme">
+            <span id="themeModeIcon">☀️</span>
+            <span id="themeModeText">LIGHT</span>
+        </button>
+    </header>
+
+    <div id="viewport">
+        <main id="maze-world">
+
+            <!-- 01: HERO SECTION (STRICT 100VH) -->
+            <section class="panel" id="hero">
+                <div>
+                    <div class="corridor-tag">CORRIDOR 01 // ENTRY</div>
+                    <h1>CULTURAL<br><span class="highlight-yellow">LABYRINTH.</span></h1>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" data-auto-slide="true">
+                        <div class="slide bg-e1">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">SECTOR 01</span>
+                            <div class="card-title">BLANTYRE TO LILONGWE</div>
+                            <p class="punchline">Music movements, car culture, and street style documented at ground level.</p>
+                        </div>
+                        <div class="slide bg-e2">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">MANIFESTO</span>
+                            <div class="card-title">NOT A BLOG FEED</div>
+                            <p class="punchline">Navigate through connected corridors. Every scroll turns a corner.</p>
+                        </div>
+                        <div class="slide bg-e3">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">ORIENTATION</span>
+                            <div class="card-title">SCROLL TO PAN</div>
+                            <p class="punchline">Move down into the depth of the maze to unlock adjacent threads.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="turn-btn" onclick="scrollToStage(1)">
+                        <span>SCROLL DOWN: ABOUT MAZE</span>
+                        <span>↓</span>
+                    </button>
+                    <div class="hazard-bar"></div>
+                </div>
+            </section>
+
+            <!-- 02: ABOUT SECTION (STRICT 100VH) -->
+            <section class="panel" id="about">
+                <div>
+                    <div class="corridor-tag">CORRIDOR 01.5 // ARCHIVE MISSION</div>
+                    <h1>UNSEEN<br><span class="highlight-cyan">SUBCULTURES.</span></h1>
+                </div>
+
+                <div class="about-card">
+                    <div class="about-text">
+                        <p><strong>MAZE.CULTRD</strong> is an independent digital archive and living chronicle of Malawian youth subcultures. We map the unseen intersections of street fashion, underground soundscapes, DAPP thrifting, and automotive culture across Blantyre, Lilongwe, Mzuzu, and Zomba.</p>
+                        
+                        <div class="hero-socials" style="margin-top: 1rem;">
+                            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </a>
+                            <a href="https://audiomack.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Audiomack">
+                                <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                            </a>
+                            <a href="https://youtube.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="YouTube">
+                                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </a>
+                            <a href="https://tiktok.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="TikTok">
+                                <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-5.2-1.74 2.89 2.89 0 0 1 2.31-2.22V8.1a6.34 6.34 0 1 0 6.34 6.34V9.28a8.16 8.16 0 0 0 4.77 1.52V7.34a4.85 4.85 0 0 1-1-.65z"/></svg>
+                            </a>
+                            <a href="https://spotify.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Spotify">
+                                <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.899 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141 C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.18-.1.2-.24-.42-.18-.6.2-1.2.8-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="about-grid-stats">
+                        <div class="stat-box">
+                            <div class="stat-title">URBAN NODES</div>
+                            <div class="stat-val">BT // LL // MZ // ZB</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-title">ARCHIVE TYPE</div>
+                            <div class="stat-val">NON-LINEAR GRID</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-title">PRIMARY FOCUS</div>
+                            <div class="stat-val">YOUTH MOVEMENT</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-title">CURATION</div>
+                            <div class="stat-val">GROUND LEVEL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="turn-btn" onclick="scrollToStage(2)">
+                        <span>ENTER CORRIDOR 02: SOUND & IDENTITY</span>
+                        <span>↓</span>
+                    </button>
+                    <div class="hazard-bar"></div>
+                </div>
+            </section>
+
+            <!-- 03: ABALE (MUSIC MOVEMENT) -->
+            <section class="panel" id="abale">
+                <div>
+                    <div class="corridor-tag">CORRIDOR 02 // SOUND & IDENTITY</div>
+                    <h1>ABALE:<br><span class="highlight-red">THE MOVEMENT.</span></h1>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" data-auto-slide="true">
+                        <div class="slide bg-a1">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">ABALE // 49</span>
+                            <div class="card-title">CRISPY'S RETURN</div>
+                            <p class="punchline">"The music created the language. The language created the identity."</p>
+                        </div>
+                        <div class="slide bg-a2">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">ABALE // 54</span>
+                            <div class="card-title">WAREHOUSE SHOWS</div>
+                            <p class="punchline">Reclaiming local street slang into a living generation's uniform.</p>
+                        </div>
+                        <div class="slide bg-a3">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">ABALE // 73</span>
+                            <div class="card-title">STREET ARCHIVE</div>
+                            <p class="punchline">Documenting the underground youth movement in real-time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="turn-btn" onclick="scrollToStage(3)">
+                        <span>TURN RIGHT: DAPP FASHION</span>
+                        <span>→</span>
+                    </button>
+                    <div class="hazard-bar"></div>
+                </div>
+            </section>
+
+            <!-- 04: JEZE (STREETWEAR & FOOTBALL) -->
+            <section class="panel" id="jeze">
+                <div>
+                    <div class="corridor-tag">CORRIDOR 03 // FOOTBALL × STREETWEAR</div>
+                    <h1>JEZE:<br><span class="highlight-cyan">DAPP FIT.</span></h1>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" data-auto-slide="true">
+                        <div class="slide bg-j1">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">JEZE // DSC9179</span>
+                            <div class="card-title">EUROPEAN CAST-OFFS</div>
+                            <p class="punchline">90s football jerseys re-contextualized into urban high fashion.</p>
+                        </div>
+                        <div class="slide bg-j2">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">KUMBALI LIVE</span>
+                            <div class="card-title">HEAVY BOOTS & DENIM</div>
+                            <p class="punchline">Worn not for the club badge, but purely for the street aesthetic.</p>
+                        </div>
+                        <div class="slide bg-j3">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">JEZE 3 // 12</span>
+                            <div class="card-title">SECOND-HAND GRAILS</div>
+                            <p class="punchline">Thrifting culture giving second life to global sporting history.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="turn-btn alt" onclick="scrollToStage(4)">
+                        <span>SCROLL DOWN: CAR CULTURE</span>
+                        <span>↓</span>
+                    </button>
+                    <div class="hazard-bar"></div>
+                </div>
+            </section>
+
+            <!-- 05: GOLF (CAR CULTURE) -->
+            <section class="panel" id="golf">
+                <div>
+                    <div class="corridor-tag">CORRIDOR 04 // CAR CULTURE</div>
+                    <h1>THE GOLF<br><span class="highlight-yellow">SERIES.</span></h1>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" data-auto-slide="true">
+                        <div class="slide bg-g1">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">LMS // 03</span>
+                            <div class="card-title">BLANTYRE DRIFT</div>
+                            <p class="punchline">F1 fandom meets local VW customization. Exhaust notes off concrete.</p>
+                        </div>
+                        <div class="slide bg-g2">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">LMS // 13</span>
+                            <div class="card-title">REWRITING MAPS</div>
+                            <p class="punchline">Custom rims and lowered suspensions as a statement of presence.</p>
+                        </div>
+                        <div class="slide bg-g3">
+                            <div class="tape-corner"></div>
+                            <span class="sticker">LMS // 50</span>
+                            <div class="card-title">THE VW E30 LEGACY</div>
+                            <p class="punchline">Is the Golf series to Malawi what the BMW E30 is to South Africa?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="turn-btn" onclick="scrollToStage(5)">
+                        <span>PROCEED TO EXIT & MAP</span>
+                        <span>↓</span>
+                    </button>
+                    <div class="hazard-bar"></div>
+                </div>
+            </section>
+
+            <!-- 06: FULL-WIDTH FOOTER PANEL -->
+            <section class="panel" id="footer">
+                <div>
+                    <div class="corridor-tag">CORRIDOR 05 // EXIT & FULL ARCHIVE</div>
+                    <h1>MAZE.<br><span class="highlight-yellow">CULTRD.</span></h1>
+                </div>
+
+                <div class="footer-content">
+                    <div class="footer-ticker">
+                        <div class="ticker-track">
+                            /// BLANTYRE /// LILONGWE /// MZUZU /// ZOMBA /// MAZE.CULTRD /// STREET ARCHIVE /// URBAN SUBCULTURES /// DAPP GRAILS /// CAR CULTURE /// ABALE MOVEMENT /// 
+                            /// BLANTYRE /// LILONGWE /// MZUZU /// ZOMBA /// MAZE.CULTRD /// STREET ARCHIVE /// URBAN SUBCULTURES /// DAPP GRAILS /// CAR CULTURE /// ABALE MOVEMENT ///
+                        </div>
+                    </div>
+
+                    <div class="footer-grid">
+                        <div class="footer-col">
+                            <h4>SECTORS</h4>
+                            <ul class="footer-links">
+                                <li><a href="#" onclick="scrollToStage(2)">Abale Soundscapes <span>↗</span></a></li>
+                                <li><a href="#" onclick="scrollToStage(3)">Jeze Dapp Fits <span>↗</span></a></li>
+                                <li><a href="#" onclick="scrollToStage(4)">VW Golf Culture <span>↗</span></a></li>
+                                <li><a href="#">Nightlife Archive <span>↗</span></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>CONNECT</h4>
+                            <ul class="footer-links">
+                                <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram <span>↗</span></a></li>
+                                <li><a href="https://audiomack.com" target="_blank" rel="noopener">Audiomack <span>↗</span></a></li>
+                                <li><a href="https://youtube.com" target="_blank" rel="noopener">YouTube <span>↗</span></a></li>
+                                <li><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok <span>↗</span></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>SUBMISSIONS</h4>
+                            <p class="footer-sub-text">Have photography, articles, or zines documenting Malawian subcultures? Submit your work to our underground editorial team.</p>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>LABYRINTH MAP</h4>
+                            <p class="footer-sub-text">MAZE.CULTRD operates as a non-linear 2D spatial grid. Every scroll represents a corner turned in the urban archive.</p>
+                        </div>
+                    </div>
+
+                    <div class="city-nodes-bar">
+                        BLANTYRE // LILONGWE // MZUZU // ZOMBA
+                    </div>
+
+                    <div class="copyright-line">
+                        <span>© 2026 MAZE.CULTRD // ALL RIGHTS RESERVED</span>
+                        <span>MALAWIAN SUBCULTURES & STREET ARCHIVE</span>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="turn-btn alt" onclick="scrollToStage(0)">
+                        <span>RETURN TO MAZE MOUTH</span>
+                        <span>↺</span>
+                    </button>
+                    <div class="hazard-bar"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // --- 1. THEME SWITCHER LOGIC ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeModeIcon');
+        const themeText = document.getElementById('themeModeText');
+        const body = document.body;
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'LIGHT';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'DARK';
+            }
+        });
+
+        // --- 2. 2D MAZE NAVIGATION SYSTEM ---
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!prefersReducedMotion) {
+            const world = document.getElementById('maze-world');
+            const scrollTotal = 6000;
+            document.body.style.height = `${scrollTotal}px`;
+
+            let currentX = 0, currentY = 0;
+            let targetX = 0, targetY = 0;
+            const ease = 0.12;
+
+            function mazeLoop() {
+                const scrollY = window.scrollY;
+                const maxScroll = scrollTotal - window.innerHeight;
+                const progress = Math.min(Math.max(maxScroll > 0 ? scrollY / maxScroll : 0, 0), 1);
+
+                if (progress <= 0.20) {
+                    const p = progress / 0.20;
+                    targetX = 0;
+                    targetY = p * 100;
+                } else if (progress <= 0.40) {
+                    const p = (progress - 0.20) / 0.20;
+                    targetX = 0;
+                    targetY = 100 + (p * 100);
+                } else if (progress <= 0.60) {
+                    const p = (progress - 0.40) / 0.20;
+                    targetX = p * 100;
+                    targetY = 200;
+                } else if (progress <= 0.80) {
+                    const p = (progress - 0.60) / 0.20;
+                    targetX = 100;
+                    targetY = 200 + (p * 100);
+                } else {
+                    const p = (progress - 0.80) / 0.20;
+                    targetX = 100;
+                    targetY = 300 + (p * 100);
+                }
+
+                currentX += (targetX - currentX) * ease;
+                currentY += (targetY - currentY) * ease;
+
+                world.style.transform = `translate3d(-${currentX.toFixed(2)}vw, -${currentY.toFixed(2)}vh, 0)`;
+
+                requestAnimationFrame(mazeLoop);
+            }
+
+            requestAnimationFrame(mazeLoop);
+
+            window.scrollToStage = function(stage) {
+                const maxScroll = scrollTotal - window.innerHeight;
+                let targetProgress = 0;
+
+                if (stage === 1) targetProgress = 0.20;
+                if (stage === 2) targetProgress = 0.40;
+                if (stage === 3) targetProgress = 0.60;
+                if (stage === 4) targetProgress = 0.80;
+                if (stage === 5) targetProgress = 1.00;
+
+                window.scrollTo({
+                    top: targetProgress * maxScroll,
+                    behavior: 'smooth'
+                });
+            };
+
+            // --- 3. AUTOMATED CAROUSEL & SCALE-ON-FOCUS SYSTEM ---
+            const tracks = document.querySelectorAll('.carousel-track');
+
+            tracks.forEach(track => {
+                const slides = Array.from(track.querySelectorAll('.slide'));
+                let currentIndex = 0;
+                let autoSlideInterval = null;
+
+                const observerOptions = {
+                    root: track,
+                    threshold: 0.6
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            slides.forEach(s => s.classList.remove('is-focused'));
+                            entry.target.classList.add('is-focused');
+                            currentIndex = slides.indexOf(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                slides.forEach(slide => observer.observe(slide));
+
+                function startAutoSlide() {
+                    autoSlideInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % slides.length;
+                        const targetSlide = slides[currentIndex];
+                        
+                        track.scrollTo({
+                            left: targetSlide.offsetLeft - (track.clientWidth / 2) + (targetSlide.clientWidth / 2),
+                            behavior: 'smooth'
+                        });
+                    }, 3200);
+                }
+
+                track.addEventListener('touchstart', () => clearInterval(autoSlideInterval), { passive: true });
+                track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+                track.addEventListener('mouseleave', () => startAutoSlide());
+
+                startAutoSlide();
+            });
+        }
+    </script>
+</body>
+</html>

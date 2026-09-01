@@ -1,0 +1,309 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ThemeToggle from '../components/ThemeToggle.svelte';
+import Carousel from '../components/Carousel.svelte';
+
+const heroSlides = [
+  { bgClass: 'bg-e1', sticker: 'SECTOR 01', title: 'BLANTYRE TO LILONGWE', punchline: 'Music movements, car culture, and street style documented at ground level.' },
+  { bgClass: 'bg-e2', sticker: 'MANIFESTO', title: 'NOT A BLOG FEED', punchline: 'Navigate through connected corridors. Every scroll turns a corner.' },
+  { bgClass: 'bg-e3', sticker: 'ORIENTATION', title: 'SCROLL TO PAN', punchline: 'Move down into the depth of the maze to unlock adjacent threads.' },
+];
+const abaleSlides = [
+  { bgClass: 'bg-a1', sticker: 'ABALE // 49', title: "CRISPY'S RETURN", punchline: '"The music created the language. The language created the identity."' },
+  { bgClass: 'bg-a2', sticker: 'ABALE // 54', title: 'WAREHOUSE SHOWS', punchline: 'Reclaiming local street slang into a living generation\'s uniform.' },
+  { bgClass: 'bg-a3', sticker: 'ABALE // 73', title: 'STREET ARCHIVE', punchline: 'Documenting the underground youth movement in real-time.' },
+];
+const jezeSlides = [
+  { bgClass: 'bg-j1', sticker: 'JEZE // DSC9179', title: 'EUROPEAN CAST-OFFS', punchline: '90s football jerseys re-contextualized into urban high fashion.' },
+  { bgClass: 'bg-j2', sticker: 'KUMBALI LIVE', title: 'HEAVY BOOTS & DENIM', punchline: 'Worn not for the club badge, but purely for the street aesthetic.' },
+  { bgClass: 'bg-j3', sticker: 'JEZE 3 // 12', title: 'SECOND-HAND GRAILS', punchline: 'Thrifting culture giving second life to global sporting history.' },
+];
+const golfSlides = [
+  { bgClass: 'bg-g1', sticker: 'LMS // 03', title: 'BLANTYRE DRIFT', punchline: 'F1 fandom meets local VW customization. Exhaust notes off concrete.' },
+  { bgClass: 'bg-g2', sticker: 'LMS // 13', title: 'REWRITING MAPS', punchline: 'Custom rims and lowered suspensions as a statement of presence.' },
+  { bgClass: 'bg-g3', sticker: 'LMS // 50', title: 'THE VW E30 LEGACY', punchline: 'Is the Golf series to Malawi what the BMW E30 is to South Africa?' },
+];
+---
+
+<Layout>
+  <header>
+    <div class="header-left">
+      <div class="brand">MAZE.CULTRD</div>
+      <div class="street-tag">MW // SUBCULTURES</div>
+    </div>
+    <ThemeToggle client:load />
+  </header>
+
+  <div id="viewport">
+    <main id="maze-world">
+      <!-- 01: HERO -->
+      <section class="panel" id="hero">
+        <div>
+          <div class="corridor-tag">CORRIDOR 01 // ENTRY</div>
+          <h1>CULTURAL<br /><span class="highlight-yellow">LABYRINTH.</span></h1>
+        </div>
+        
+        <Carousel slides={heroSlides} client:visible />
+        <div class="hero-actions">
+          <a href="/projects" class="turn-btn hero-action-btn" aria-label="View Projects">
+            <span>PROJECTS</span>
+            <span>→</span>
+          </a>
+          <a href="/articles" class="turn-btn alt hero-action-btn" aria-label="View Articles">
+            <span>ARTICLES</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <div>
+          <button class="turn-btn" data-stage="1">
+            <span>SCROLL DOWN: ABOUT MAZE</span>
+            <span>↓</span>
+          </button>
+          <div class="hazard-bar"></div>
+        </div>
+      </section>
+
+      <!-- 02: ABOUT -->
+      <section class="panel" id="about">
+        <div>
+          <div class="corridor-tag">CORRIDOR 01.5 // ARCHIVE MISSION</div>
+          <h1>UNSEEN<br /><span class="highlight-cyan">SUBCULTURES.</span></h1>
+        </div>
+
+        <div class="about-card">
+          <div class="about-text">
+            <p><strong>MAZE.CULTRD</strong> is an independent digital archive and living chronicle of Malawian youth subcultures. We map the unseen intersections of street fashion, underground soundscapes, DAPP thrifting, and automotive culture across Blantyre, Lilongwe, Mzuzu, and Zomba.</p>
+            <div class="hero-socials" style="margin-top: 1rem;">
+              <a href="https://instagram.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a href="https://audiomack.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Audiomack">
+                <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="TikTok">
+                <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-5.2-1.74 2.89 2.89 0 0 1 2.31-2.22V8.1a6.34 6.34 0 1 0 6.34 6.34V9.28a8.16 8.16 0 0 0 4.77 1.52V7.34a4.85 4.85 0 0 1-1-.65z"/></svg>
+              </a>
+              <a href="https://spotify.com" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Spotify">
+                <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.899 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141 C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.18-.1.2-.24-.42-.18-.6.2-1.2.8-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="about-grid-stats">
+            <div class="stat-box">
+              <div class="stat-title">URBAN NODES</div>
+              <div class="stat-val">BT // LL // MZ // ZB</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-title">ARCHIVE TYPE</div>
+              <div class="stat-val">NON-LINEAR GRID</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-title">PRIMARY FOCUS</div>
+              <div class="stat-val">YOUTH MOVEMENT</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-title">CURATION</div>
+              <div class="stat-val">GROUND LEVEL</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button class="turn-btn" data-stage="2">
+            <span>ENTER CORRIDOR 02: SOUND & IDENTITY</span>
+            <span>↓</span>
+          </button>
+          <div class="hazard-bar"></div>
+        </div>
+      </section>
+
+      <!-- 03: ABALE -->
+      <section class="panel" id="abale">
+        <div>
+          <div class="corridor-tag">CORRIDOR 02 // SOUND & IDENTITY</div>
+          <h1>ABALE:<br /><span class="highlight-red">THE MOVEMENT.</span></h1>
+        </div>
+        <Carousel slides={abaleSlides} client:visible />
+        <div>
+          <button class="turn-btn" data-stage="3">
+            <span>TURN RIGHT: DAPP FASHION</span>
+            <span>→</span>
+          </button>
+          <div class="hazard-bar"></div>
+        </div>
+      </section>
+
+      <!-- 04: JEZE -->
+      <section class="panel" id="jeze">
+        <div>
+          <div class="corridor-tag">CORRIDOR 03 // FOOTBALL × STREETWEAR</div>
+          <h1>JEZE:<br /><span class="highlight-cyan">DAPP FIT.</span></h1>
+        </div>
+        <Carousel slides={jezeSlides} client:visible />
+        <div>
+          <button class="turn-btn alt" data-stage="4">
+            <span>SCROLL DOWN: CAR CULTURE</span>
+            <span>↓</span>
+          </button>
+          <div class="hazard-bar"></div>
+        </div>
+      </section>
+
+      <!-- 05: GOLF -->
+      <section class="panel" id="golf">
+        <div>
+          <div class="corridor-tag">CORRIDOR 04 // CAR CULTURE</div>
+          <h1>THE GOLF<br /><span class="highlight-yellow">SERIES.</span></h1>
+        </div>
+        <Carousel slides={golfSlides} client:visible />
+        <div>
+          <button class="turn-btn" data-stage="5">
+            <span>PROCEED TO EXIT & MAP</span>
+            <span>↓</span>
+          </button>
+          <div class="hazard-bar"></div>
+        </div>
+      </section>
+
+      <!-- 06: FOOTER -->
+      <section class="panel" id="footer">
+        <div>
+          <div class="corridor-tag">CORRIDOR 05 // EXIT & FULL ARCHIVE</div>
+          <h1>MAZE.<br /><span class="highlight-yellow">CULTRD.</span></h1>
+        </div>
+
+        <div class="footer-content">
+          <div class="footer-ticker">
+            <div class="ticker-track">
+              /// BLANTYRE /// LILONGWE /// MZUZU /// ZOMBA /// MAZE.CULTRD /// STREET ARCHIVE /// URBAN SUBCULTURES /// DAPP GRAILS /// CAR CULTURE /// ABALE MOVEMENT ///
+              /// BLANTYRE /// LILONGWE /// MZUZU /// ZOMBA /// MAZE.CULTRD /// STREET ARCHIVE /// URBAN SUBCULTURES /// DAPP GRAILS /// CAR CULTURE /// ABALE MOVEMENT ///
+            </div>
+          </div>
+
+          <div class="footer-grid">
+            <div class="footer-col">
+              <h4>SECTORS</h4>
+              <ul class="footer-links">
+                <li><a href="#" data-stage="2">Abale Soundscapes <span>↗</span></a></li>
+                <li><a href="#" data-stage="3">Jeze Dapp Fits <span>↗</span></a></li>
+                <li><a href="#" data-stage="4">VW Golf Culture <span>↗</span></a></li>
+                <li><a href="#">Nightlife Archive <span>↗</span></a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>CONNECT</h4>
+              <ul class="footer-links">
+                <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram <span>↗</span></a></li>
+                <li><a href="https://audiomack.com" target="_blank" rel="noopener">Audiomack <span>↗</span></a></li>
+                <li><a href="https://youtube.com" target="_blank" rel="noopener">YouTube <span>↗</span></a></li>
+                <li><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok <span>↗</span></a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>SUBMISSIONS</h4>
+              <p class="footer-sub-text">Have photography, articles, or zines documenting Malawian subcultures? Submit your work to our underground editorial team.</p>
+            </div>
+            <div class="footer-col">
+              <h4>LABYRINTH MAP</h4>
+              <p class="footer-sub-text">MAZE.CULTRD operates as a non-linear 2D spatial grid. Every scroll represents a corner turned in the urban archive.</p>
+            </div>
+          </div>
+
+          <div class="city-nodes-bar">BLANTYRE // LILONGWE // MZUZU // ZOMBA</div>
+
+          <div class="copyright-line">
+            <span>© 2026 MAZE.CULTRD // ALL RIGHTS RESERVED</span>
+            <span>MALAWIAN SUBCULTURES & STREET ARCHIVE</span>
+          </div>
+        </div>
+
+        <div>
+          <button class="turn-btn alt" data-stage="0">
+            <span>RETURN TO MAZE MOUTH</span>
+            <span>↺</span>
+          </button>
+          <div class="hazard-bar"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // 2D Maze navigation — ported from original index.html, now as Astro client script
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      const world = document.getElementById('maze-world');
+      const scrollTotal = 6000;
+      document.body.style.height = `${scrollTotal}px`;
+
+      let currentX = 0, currentY = 0;
+      let targetX = 0, targetY = 0;
+      const ease = 0.12;
+
+      function mazeLoop() {
+        const scrollY = window.scrollY;
+        const maxScroll = scrollTotal - window.innerHeight;
+        const progress = Math.min(Math.max(maxScroll > 0 ? scrollY / maxScroll : 0, 0), 1);
+
+        if (progress <= 0.20) {
+          const p = progress / 0.20;
+          targetX = 0;
+          targetY = p * 100;
+        } else if (progress <= 0.40) {
+          const p = (progress - 0.20) / 0.20;
+          targetX = 0;
+          targetY = 100 + (p * 100);
+        } else if (progress <= 0.60) {
+          const p = (progress - 0.40) / 0.20;
+          targetX = p * 100;
+          targetY = 200;
+        } else if (progress <= 0.80) {
+          const p = (progress - 0.60) / 0.20;
+          targetX = 100;
+          targetY = 200 + (p * 100);
+        } else {
+          const p = (progress - 0.80) / 0.20;
+          targetX = 100;
+          targetY = 300 + (p * 100);
+        }
+
+        currentX += (targetX - currentX) * ease;
+        currentY += (targetY - currentY) * ease;
+
+        if (world) world.style.transform = `translate3d(-${currentX.toFixed(2)}vw, -${currentY.toFixed(2)}vh, 0)`;
+
+        requestAnimationFrame(mazeLoop);
+      }
+      requestAnimationFrame(mazeLoop);
+
+      function scrollToStage(stage) {
+        const maxScroll = scrollTotal - window.innerHeight;
+        let targetProgress = 0;
+        if (stage === 1) targetProgress = 0.20;
+        if (stage === 2) targetProgress = 0.40;
+        if (stage === 3) targetProgress = 0.60;
+        if (stage === 4) targetProgress = 0.80;
+        if (stage === 5) targetProgress = 1.00;
+        window.scrollTo({ top: targetProgress * maxScroll, behavior: 'smooth' });
+      }
+
+      // expose globally for any inline handlers
+      window.scrollToStage = scrollToStage;
+
+      // delegate [data-stage] clicks
+      document.addEventListener('click', (e) => {
+        const el = (e.target instanceof HTMLElement ? e.target.closest('[data-stage]') : null);
+        if (!el) return;
+        const stage = parseInt(el.getAttribute('data-stage') || '', 10);
+        if (Number.isNaN(stage)) return;
+        e.preventDefault();
+        scrollToStage(stage);
+      });
+    }
+  </script>
+</Layout>

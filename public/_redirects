@@ -1,0 +1,4 @@
+# Cloudflare Pages Redirects
+# SPA/maze fallback - keep 404 for unknown routes, but allow clean URLs
+# No catch-all needed for Astro static, but ensure /articles/* and /projects/* work
+# Example: /old-path /new-path 301

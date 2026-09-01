@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ThemeToggle from '../components/ThemeToggle.svelte';
+---
+
+<Layout title="Articles | MAZE.CULTRD" description="MAZE.CULTRD Articles — ABALE: The Movement and The Golf Series. Long-form archive of Malawian subcultures.">
+  <header>
+    <div class="header-left">
+      <a href="/" style="text-decoration:none"><div class="brand">MAZE.CULTRD</div></a>
+      <div class="street-tag">MW // ARTICLES</div>
+    </div>
+    <ThemeToggle client:load />
+  </header>
+
+  <main class="archive-page">
+    <div>
+      <div class="corridor-tag">ARCHIVE // ARTICLES</div>
+      <h1>AR<span class="highlight-cyan">TICLES.</span></h1>
+      <p class="archive-intro">
+        Long-form dispatches from the labyrinth — sound, identity, and car culture written at ground level. Two corridors, two communities.
+      </p>
+    </div>
+
+    <div class="archive-grid">
+      <!-- ABALE -->
+      <article class="archive-card">
+        <div class="archive-card-image" style="background-image: url('/ARTICLES/ABALE/a_ba.le_49.jpg')"></div>
+        <div class="archive-card-body">
+          <div class="archive-card-meta">ARTICLE 01 // ABALE // SOUND & IDENTITY</div>
+          <h2 class="archive-card-title">ABALE: The Movement</h2>
+          <p class="archive-card-excerpt">
+            The music created the language. The language created the identity. From Crispy's return to Run North and Mario Bros — how a trap scene found its Malawian voice and turned merch into community.
+          </p>
+          <a href="/articles/abale" class="archive-card-link">READ ARTICLE <span>→</span></a>
+        </div>
+      </article>
+
+      <!-- GOLF SERIES -->
+      <article class="archive-card">
+        <div class="archive-card-image" style="background-image: url('/ARTICLES/CAR CULTURE/LMS_3.jpg')"></div>
+        <div class="archive-card-body">
+          <div class="archive-card-meta">ARTICLE 02 // CAR CULTURE // BLANTYRE — LILONGWE</div>
+          <h2 class="archive-card-title">Could the Golf Series be to Malawi what the E30 is to South Africa?</h2>
+          <p class="archive-card-excerpt">
+            From BBS rims to “vrrrmm — pha!” exhausts, the Golf GTI is becoming a cultural object. Communities, wraps, annual shows, and the question of identity on four wheels.
+          </p>
+          <a href="/articles/golf-series" class="archive-card-link alt">READ ARTICLE <span>→</span></a>
+        </div>
+      </article>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <a href="/" class="turn-btn" style="max-width:280px; text-decoration:none;"><span>← RETURN TO MAZE</span></a>
+      <a href="/projects" class="turn-btn alt" style="max-width:280px; text-decoration:none;"><span>VIEW PROJECTS</span><span>→</span></a>
+    </div>
+    <div class="hazard-bar" style="margin-top:0.4rem; max-width:568px;"></div>
+  </main>
+</Layout>

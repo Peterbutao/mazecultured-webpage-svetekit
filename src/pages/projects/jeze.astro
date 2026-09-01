@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ThemeToggle from '../../components/ThemeToggle.svelte';
+---
+
+<Layout title="JEZE — Football × Streetwear | MAZE.CULTRD" description="JEZE explores football and fashion through DAPP-sourced jerseys — beyond the pitch, into everyday Malawian street culture.">
+  <header>
+    <div class="header-left">
+      <a href="/" style="text-decoration:none"><div class="brand">MAZE.CULTRD</div></a>
+      <div class="street-tag">MW // PROJECTS // JEZE</div>
+    </div>
+    <ThemeToggle client:load />
+  </header>
+
+  <main class="archive-detail">
+    <div class="corridor-tag">PROJECT 01 // JEZE // FOOTBALL × STREETWEAR</div>
+    <h1>JEZE:<br /><span class="highlight-cyan">DAPP FIT.</span></h1>
+
+    <div class="archive-detail-hero" style="background-image: url('/PROJECTS/JEZE/JEZE 3_1.JPG')">
+      <div>
+        <div style="background:#000; color:var(--neon-yellow); font-family:var(--font-head); font-size:0.75rem; padding:0.25rem 0.5rem; display:inline-block; border:1px solid var(--neon-yellow);">JEZE 3 // 01 — DAPP GRAILS</div>
+        <div style="margin-top:0.4rem; color:#fff; font-family:var(--font-head); font-size:1.25rem; text-transform:uppercase; text-shadow:2px 2px 4px rgba(0,0,0,0.8);">European Cast-Offs, Malawian Fit</div>
+      </div>
+    </div>
+
+    <div class="article-body">
+      <p><strong>Jeze is a photo series exploring the intersection of football and fashion</strong> — two cultures that have always shared a strong influence on how we express ourselves.</p>
+      <p>Through the jerseys we wear, the clubs we represent, and the way we style them, Jeze looks beyond the pitch to celebrate football as a part of everyday culture. The series primarily sources its jerseys through <strong>DAPP</strong>, giving pre-loved pieces a new life while highlighting the stories, identity and style attached to them.</p>
+      <p>More than just football shirts, Jeze is about the people, the culture and the fashion that make the beautiful game what it is. 90s jerseys are worn not for the club badge, but purely for the street aesthetic — heavy boots, denim, and second-hand grails re-contextualized into urban high fashion.</p>
+
+      <h2>Sourcing & Styling</h2>
+      <p>DAPP remains the backbone — European cast-offs find second life in Blantyre and Lilongwe markets. Dortmund, retro national kits, and forgotten sponsor prints become the fabric of a new uniform. Each fit is styled ground-level: oversized, layered, and photographed where it lives — not in a studio.</p>
+
+      <div class="detail-gallery">
+        <img src="/PROJECTS/JEZE/DSC_9179.jpg" alt="JEZE DSC 9179" loading="lazy" />
+        <img src="/PROJECTS/JEZE/JEZE 3_12.JPG" alt="JEZE 3_12" loading="lazy" />
+        <img src="/PROJECTS/JEZE/KUMBALI LIVE_13.jpg" alt="Kumbali Live 13" loading="lazy" />
+        <img src="/PROJECTS/JEZE/JEZE 3_4.JPG" alt="JEZE 3_4" loading="lazy" />
+        <img src="/PROJECTS/JEZE/DSC_9198.jpg" alt="DSC 9198" loading="lazy" />
+        <img src="/PROJECTS/JEZE/KUMBALI LIVE_30.jpg" alt="Kumbali Live 30" loading="lazy" />
+      </div>
+
+      <p style="font-size:0.8rem; opacity:0.75; border-top:1.5px dashed #000; padding-top:0.75rem;">Photography: JEZE Collective // Locations: Blantyre, Lilongwe // All jerseys DAPP-sourced. Additional frames: DSC_9182, Mathero x Dortmund series.</p>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:1.25rem;">
+      <a href="/projects" class="turn-btn" style="max-width:260px; text-decoration:none;"><span>← ALL PROJECTS</span></a>
+      <a href="/articles" class="turn-btn alt" style="max-width:260px; text-decoration:none;"><span>READ ARTICLES</span><span>→</span></a>
+    </div>
+    <div class="hazard-bar" style="margin-top:0.4rem;"></div>
+  </main>
+</Layout>

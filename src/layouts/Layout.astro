@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = 'MAZE.CULTRD | Urban Subculture Labyrinth', description = 'Independent archive of Malawian youth subcultures — music, streetwear, car culture.' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;700;900&family=Syne:wght@800&display=swap" rel="stylesheet" />
+    <slot name="head" />
+  </head>
+  <body data-theme="light">
+    <slot />
+    <script is:inline>
+      // persist theme across reloads
+      const saved = localStorage.getItem('mazecultured-theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.body.setAttribute('data-theme', saved);
+      }
+    </script>
+  </body>
+</html>

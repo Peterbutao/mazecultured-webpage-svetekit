@@ -1,0 +1,7 @@
+name = "mazecultured"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "dist"
+
+# For Cloudflare Pages, build command and output are configured in the dashboard.
+# This file enables `wrangler pages deploy dist` locally.
+# No Worker config needed for static Astro site.
