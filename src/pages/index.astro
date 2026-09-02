@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ThemeToggle from '../components/ThemeToggle.svelte';
+import NavMenu from '../components/NavMenu.svelte';
 import Carousel from '../components/Carousel.svelte';
 
 const heroSlides = [
@@ -31,7 +31,7 @@ const golfSlides = [
       <div class="brand">MAZE.CULTRD</div>
       <div class="street-tag">MW // SUBCULTURES</div>
     </div>
-    <ThemeToggle client:load />
+    <NavMenu client:load />
   </header>
 
   <div id="viewport">
@@ -54,15 +54,18 @@ const golfSlides = [
             <span>→</span>
           </a>
         </div>
+        <br />
 
         <div>
           <button class="turn-btn" data-stage="1">
-            <span>SCROLL DOWN: ABOUT MAZE</span>
+            <span>ABOUT MAZE</span>
             <span>↓</span>
           </button>
           <div class="hazard-bar"></div>
+          <br/>
         </div>
       </section>
+      
 
       <!-- 02: ABOUT -->
       <section class="panel" id="about">

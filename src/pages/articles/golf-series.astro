@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ThemeToggle from '../../components/ThemeToggle.svelte';
+import NavMenu from '../../components/NavMenu.svelte';
 ---
 
 <Layout title="The Golf Series — Malawi's E30? | MAZE.CULTRD" description="Could the Volkswagen Golf be to Malawi what the BMW E30 is to South Africa? Car culture, community, and identity on Malawian roads.">
@@ -9,7 +9,7 @@ import ThemeToggle from '../../components/ThemeToggle.svelte';
       <a href="/" style="text-decoration:none"><div class="brand">MAZE.CULTRD</div></a>
       <div class="street-tag">MW // ARTICLES // CAR CULTURE</div>
     </div>
-    <ThemeToggle client:load />
+    <NavMenu client:load />
   </header>
 
   <main class="archive-detail">

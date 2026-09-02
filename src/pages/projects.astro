@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ThemeToggle from '../components/ThemeToggle.svelte';
+import NavMenu from '../components/NavMenu.svelte';
 ---
 
 <Layout title="Projects | MAZE.CULTRD" description="MAZE.CULTRD Projects — JEZE DAPP FIT and ongoing photographic series documenting Malawian youth subcultures.">
@@ -9,7 +9,7 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
       <a href="/" style="text-decoration:none"><div class="brand">MAZE.CULTRD</div></a>
       <div class="street-tag">MW // PROJECTS</div>
     </div>
-    <ThemeToggle client:load />
+    <NavMenu client:load />
   </header>
 
   <main class="archive-page">
