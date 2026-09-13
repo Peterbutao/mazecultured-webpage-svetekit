@@ -51,6 +51,7 @@
 
         .maze{
             color: var(--neon-yellow);
+            letter-spacing:0.5rem;
         }
 
         /* Neon glow — ABOUT h1.maze — broken neon blink */
