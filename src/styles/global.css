@@ -49,6 +49,102 @@
             background-size: 24px 24px, 40px 100%, 100% 40px;
         }
 
+        .maze{
+            color: var(--neon-yellow);
+        }
+
+        /* Neon glow — ABOUT h1.maze — broken neon blink */
+        #about h1.maze {
+            color: var(--neon-yellow);
+            -webkit-text-stroke: 1px #000;
+            paint-order: stroke fill;
+            text-shadow:
+                0 0 7px var(--neon-yellow),
+                0 0 10px var(--neon-yellow),
+                0 0 21px var(--neon-yellow),
+                0 0 42px rgba(215, 240, 0, 0.65),
+                0 0 82px rgba(215, 240, 0, 0.45),
+                0 0 92px rgba(215, 240, 0, 0.35),
+                0 0 102px rgba(215, 240, 0, 0.25);
+            animation: neon-broken 3.8s infinite steps(1);
+            will-change: opacity, text-shadow;
+        }
+
+        [data-theme="dark"] #about h1.maze {
+            -webkit-text-stroke: 0.8px rgba(0,0,0,0.9);
+            text-shadow:
+                0 0 4px #fff,
+                0 0 11px #fff,
+                0 0 19px var(--neon-yellow),
+                0 0 40px var(--neon-yellow),
+                0 0 80px var(--neon-yellow),
+                0 0 90px var(--neon-yellow),
+                0 0 100px var(--neon-yellow);
+            animation-name: neon-broken-dark;
+        }
+
+        /* Light — broken: long ON, then erratic rapid OFF flickers */
+        @keyframes neon-broken {
+            /* ON — full glow */
+            0%, 7%, 9%, 11%, 14%, 25%, 27%, 30%, 34%, 50%, 52%, 55%, 59%, 100% {
+                opacity: 1;
+                color: var(--neon-yellow);
+                -webkit-text-stroke: 1px #000;
+                text-shadow:
+                    0 0 7px var(--neon-yellow),
+                    0 0 10px var(--neon-yellow),
+                    0 0 21px var(--neon-yellow),
+                    0 0 42px rgba(215, 240, 0, 0.65),
+                    0 0 82px rgba(215, 240, 0, 0.45),
+                    0 0 92px rgba(215, 240, 0, 0.35),
+                    0 0 102px rgba(215, 240, 0, 0.25);
+            }
+            /* OFF — dim / dead tube */
+            8%, 10%, 12%, 26%, 31%, 33%, 53%, 56%, 58% {
+                opacity: 0.28;
+                color: #3d3d00;
+                -webkit-text-stroke: 1px #222;
+                text-shadow: none;
+            }
+            /* stutter — half-lit buzz */
+            13%, 32%, 54%, 60% {
+                opacity: 0.72;
+                color: var(--neon-yellow);
+                text-shadow:
+                    0 0 4px var(--neon-yellow),
+                    0 0 8px var(--neon-yellow);
+            }
+        }
+
+        @keyframes neon-broken-dark {
+            0%, 7%, 9%, 11%, 14%, 25%, 27%, 30%, 34%, 50%, 52%, 55%, 59%, 100% {
+                opacity: 1;
+                color: var(--neon-yellow);
+                -webkit-text-stroke: 0.8px rgba(0,0,0,0.9);
+                text-shadow:
+                    0 0 4px #fff,
+                    0 0 11px #fff,
+                    0 0 19px var(--neon-yellow),
+                    0 0 40px var(--neon-yellow),
+                    0 0 80px var(--neon-yellow),
+                    0 0 90px var(--neon-yellow),
+                    0 0 100px var(--neon-yellow);
+            }
+            8%, 10%, 12%, 26%, 31%, 33%, 53%, 56%, 58% {
+                opacity: 0.22;
+                color: #3a3a00;
+                -webkit-text-stroke: 0.8px #111;
+                text-shadow: none;
+            }
+            13%, 32%, 54%, 60% {
+                opacity: 0.68;
+                color: var(--neon-yellow);
+                text-shadow:
+                    0 0 4px #fff,
+                    0 0 10px var(--neon-yellow);
+            }
+        }
+
         #viewport {
             position: fixed;
             top: 0;
@@ -956,4 +1052,5 @@
             #maze-world { position: static; width: 100%; height: auto; transform: none !important; }
             .panel { position: relative; top: 0 !important; left: 0 !important; height: auto; min-height: 100vh; }
             .ticker-track { animation: none; }
+            #about h1.maze { animation: none; }
         }
